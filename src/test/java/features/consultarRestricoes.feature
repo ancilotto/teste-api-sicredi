@@ -1,9 +1,11 @@
 #language:pt
 Funcionalidade: Consultar o CPF informando, retornando se ele possui ou não uma restrição
 
+  Contexto:
+    Dado que eu tenha acesso a API de consulta de CPF
+
   @Teste
   Cenário: Verificar se o resultado ao consultar um cpf sem restrição está de acordo com a documentação
-    Dado que eu tenha acesso a API de consulta de CPF
     Quando informar um CPF sem restrição e realizar a consulta
     Entao o status code retornado é 204
 

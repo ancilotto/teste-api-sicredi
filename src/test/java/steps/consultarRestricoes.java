@@ -8,13 +8,12 @@ import io.restassured.http.Method;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
-import org.junit.Test;
+
 import static org.junit.Assert.assertEquals;
-import org.testng.IMethodInstance;
 
 import static io.restassured.RestAssured.request;
 
-public class GETconsultarRestricoes {
+public class consultarRestricoes {
     String url = "http://localhost:8080/api/v1/";
     Response response;
 

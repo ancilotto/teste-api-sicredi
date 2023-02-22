@@ -10,7 +10,6 @@ import io.restassured.module.jsv.JsonSchemaValidator;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
-import org.json.JSONObject;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;

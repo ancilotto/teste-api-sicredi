@@ -10,6 +10,7 @@ import io.cucumber.java.pt.Quando;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.module.jsv.JsonSchemaValidator;
+import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import org.json.JSONObject;
@@ -19,6 +20,7 @@ import java.util.Optional;
 import static org.junit.Assert.assertEquals;
 
 public class CriarSimulacao {
+    Faker faker = new Faker();
     String url = null;
     String payloadSimulacao;
     Response response;
@@ -31,8 +33,6 @@ public class CriarSimulacao {
 
     @E("tenha um payload com dados válidos para utilizar na criação")
     public void tenha_um_payload_com_dados_validos_para_utilizar_na_criacao() throws JsonProcessingException {
-        Faker faker = new Faker();
-
         String nome = faker.name().fullName();
         String email = faker.internet().emailAddress();
         String cpf = faker.numerify("###########");
@@ -54,7 +54,7 @@ public class CriarSimulacao {
 
     @Quando("eu realizar a requisição para criar a simulação de crédito")
     public void eu_realizar_a_requisição_para_criar_a_simulação_de_crédito() {
-        response =  RestAssured.given()
+        response = RestAssured.given()
                 .log().all()
                 .contentType("application/json")
                 .body(payloadSimulacao)
@@ -64,11 +64,12 @@ public class CriarSimulacao {
                 .extract().response();
 
     }
+
     @E("o status code na criação for um {int}")
     public void o_status_code_na_criação_for_um(Integer code) {
         ValidatableResponse validacao = response.then();
         validacao.statusCode(code);
-        System.out.println("SUCESSO: StatusCode foi 201, de acordo com o esperado!");
+        System.out.println("SUCESSO: StatusCode foi " + code + ", de acordo com o esperado!");
     }
 
     @Então("o response é validado de acordo com o esperado")
@@ -78,4 +79,73 @@ public class CriarSimulacao {
         System.out.println("CONTRATO/SCHEMA VALIDADO COM SUCESSO!");
     }
 
+    @E("informe no payload um CPF que ja tenha uma simulação cadastrada para o mesmo")
+    public void informe_no_payload_um_cpf_que_ja_tenha_uma_simulação_cadastrada_para_o_mesmo() {
+        String nome = faker.name().fullName();
+        String email = faker.internet().emailAddress();
+        String cpf = "66414919004";
+        Integer valor = faker.number().numberBetween(2000, 5000);
+        Integer parcelas = faker.number().numberBetween(2, 48);
+        boolean seguros = faker.random().nextBoolean();
+
+        JSONObject payloadCreate = new JSONObject()
+                .put("cpf", cpf)
+                .put("nome", nome)
+                .put("email", email)
+                .put("valor", valor)
+                .put("parcelas", parcelas)
+                .put("seguro", seguros);
+
+        String payloadCreateString = payloadCreate.toString();
+        payloadSimulacao = payloadCreateString;
+    }
+    @E("informe um payload que o valor da simulação seja inferior ao permitido")
+    public void informe_um_payload_que_o_valor_da_simulação_seja_inferior_ao_permitido() {
+        String nome = faker.name().fullName();
+        String email = faker.internet().emailAddress();
+        String cpf = faker.numerify("###########");
+        Integer valor = faker.number().numberBetween(1, 999);
+        Integer parcelas = faker.number().numberBetween(2, 48);
+        boolean seguros = faker.random().nextBoolean();
+
+        JSONObject payloadCreate = new JSONObject()
+                .put("cpf", cpf)
+                .put("nome", nome)
+                .put("email", email)
+                .put("valor", valor)
+                .put("parcelas", parcelas)
+                .put("seguro", seguros);
+
+        String payloadCreateString = payloadCreate.toString();
+        payloadSimulacao = payloadCreateString;
+    }
+
+    @E("informe um payload que o valor da simulação seja superior ao permitido")
+    public void informe_um_payload_que_o_valor_da_simulação_seja_superior_ao_permitido() {
+        String nome = faker.name().fullName();
+        String email = faker.internet().emailAddress();
+        String cpf = faker.numerify("###########");
+        Integer valor = faker.number().numberBetween(40001, 45000);
+        Integer parcelas = faker.number().numberBetween(2, 48);
+        boolean seguros = faker.random().nextBoolean();
+
+        JSONObject payloadCreate = new JSONObject()
+                .put("cpf", cpf)
+                .put("nome", nome)
+                .put("email", email)
+                .put("valor", valor)
+                .put("parcelas", parcelas)
+                .put("seguro", seguros);
+
+        String payloadCreateString = payloadCreate.toString();
+        payloadSimulacao = payloadCreateString;
+    }
+
+    @Então("a mensagem {string} é retornada")
+    public void a_mensagem_é_retornada(String message) {
+        JsonPath resultMessage = new JsonPath(response.getBody().asString());
+        assertEquals(resultMessage.getString("erros.valor"), message);
+    }
+
 }
+

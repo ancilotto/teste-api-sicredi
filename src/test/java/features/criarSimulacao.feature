@@ -16,10 +16,10 @@ Funcionalidade: criar uma simulação de proposta de crédito
   Cenario: Criar uma simulação informando um CPF que ja tenha sido utilizado anteriormente
     E informe no payload um CPF que ja tenha uma simulação cadastrada para o mesmo
     Quando eu realizar a requisição para criar a simulação de crédito
-    E o status code na criação for um 409
+    E o status code na criação for um 400
     Então a mensagem "CPF duplicado" é retornada
 
-    #Não permitir criação com valor superior a 40.000
+  #Não permitir criação com valor superior a 40.000
   Cenario: Criar uma simulação onde o valor da mesma seja maior que o permitido pela regra
     E informe um payload que o valor da simulação seja superior ao permitido
     Quando eu realizar a requisição para criar a simulação de crédito
@@ -27,10 +27,10 @@ Funcionalidade: criar uma simulação de proposta de crédito
     Então a mensagem "Valor deve ser menor ou igual a R$ 40.000" é retornada
 
   #Não permitir criacao com valor inferior a 1.000
-  Cenario: Criar uma simulação onde o valor da mesma seja maior que o permitido pela regra
+  Cenario: Criar uma simulação onde o valor da mesma seja inferior que o permitido pela regra
     E informe um payload que o valor da simulação seja inferior ao permitido
     Quando eu realizar a requisição para criar a simulação de crédito
     E o status code na criação for um 400
-    Então a mensagem "Valor deve ser menor ou igual a R$ 40.000" é retornada
+    Então a mensagem "Valor deve ser maior ou igual a R$ 1.000" é retornada
 
 

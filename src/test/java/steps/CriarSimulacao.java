@@ -99,6 +99,7 @@ public class CriarSimulacao {
         String payloadCreateString = payloadCreate.toString();
         payloadSimulacao = payloadCreateString;
     }
+
     @E("informe um payload que o valor da simulação seja inferior ao permitido")
     public void informe_um_payload_que_o_valor_da_simulação_seja_inferior_ao_permitido() {
         String nome = faker.name().fullName();
@@ -141,10 +142,97 @@ public class CriarSimulacao {
         payloadSimulacao = payloadCreateString;
     }
 
-    @Então("a mensagem {string} é retornada")
-    public void a_mensagem_é_retornada(String message) {
+    @E("informe um payload que possua a quantidade de parcelas {int}")
+    public void informe_um_payload_que_possua_a_quantidade_de_parcelas(Integer parcela) {
+        String nome = faker.name().fullName();
+        String email = faker.internet().emailAddress();
+        String cpf = faker.numerify("###########");
+        Integer valor = faker.number().numberBetween(2000, 35000);
+        Integer parcelas = parcela;
+        boolean seguros = faker.random().nextBoolean();
+
+        JSONObject payloadCreate = new JSONObject()
+                .put("cpf", cpf)
+                .put("nome", nome)
+                .put("email", email)
+                .put("valor", valor)
+                .put("parcelas", parcelas)
+                .put("seguro", seguros);
+
+        String payloadCreateString = payloadCreate.toString();
+        payloadSimulacao = payloadCreateString;
+    }
+
+    @E("informe um payload em que o nome nao seja informado")
+    public void informe_um_payload_em_que_o_nome_nao_seja_informado() {
+        String nome = null;
+        String email = faker.internet().emailAddress();
+        String cpf = faker.numerify("###########");
+        Integer valor = faker.number().numberBetween(2000, 35000);
+        Integer parcelas = faker.number().numberBetween(2, 48);
+        boolean seguros = faker.random().nextBoolean();
+
+        JSONObject payloadCreate = new JSONObject()
+                .put("cpf", cpf)
+                .put("nome", nome)
+                .put("email", email)
+                .put("valor", valor)
+                .put("parcelas", parcelas)
+                .put("seguro", seguros);
+
+        String payloadCreateString = payloadCreate.toString();
+        payloadSimulacao = payloadCreateString;
+    }
+
+    @Dado("informe um payload que contenha um email no formato inválido {string}")
+    public void informe_um_payload_que_contenha_um_email_no_formato_inválido(String emailInvalido) {
+        String nome = faker.name().fullName();
+        String email = emailInvalido;
+        String cpf = faker.numerify("###########");
+        Integer valor = faker.number().numberBetween(2000, 5000);
+        Integer parcelas = faker.number().numberBetween(2, 48);
+        boolean seguros = faker.random().nextBoolean();
+
+        JSONObject payloadCreate = new JSONObject()
+                .put("cpf", cpf)
+                .put("nome", nome)
+                .put("email", email)
+                .put("valor", valor)
+                .put("parcelas", parcelas)
+                .put("seguro", seguros);
+
+        String payloadCreateString = payloadCreate.toString();
+        payloadSimulacao = payloadCreateString;
+    }
+
+    @Então("a mensagem de cpf duplicado {string} é retornada")
+    public void a_mensagem_de_cpf_duplicado_é_retornada(String message) {
+        JsonPath resultMessage = new JsonPath(response.getBody().asString());
+        assertEquals(resultMessage.getString("mensagem"), message);
+    }
+
+    @Então("a mensagem de erro para valor {string} é retornada")
+    public void a_mensagem_de_erro_para_valor_é_retornada(String message) {
         JsonPath resultMessage = new JsonPath(response.getBody().asString());
         assertEquals(resultMessage.getString("erros.valor"), message);
+    }
+
+    @Então("a mensagem de erro para parcela {string} é retornada")
+    public void a_mensagem_de_erro_para_parcela_é_retornada(String message) {
+        JsonPath resultMessage = new JsonPath(response.getBody().asString());
+        assertEquals(resultMessage.getString("erros.parcelas"), message);
+    }
+
+    @Então("a mensagem de erro para nome {string} é retornada")
+    public void a_mensagem_de_erro_para_nome_é_retornada(String message) {
+        JsonPath resultMessage = new JsonPath(response.getBody().asString());
+        assertEquals(resultMessage.getString("erros.nome"), message);
+    }
+
+    @Então("a mensagem de erro para email {string} é retornada")
+    public void a_mensagem_de_erro_para_email_é_retornada(String message) {
+        JsonPath resultMessage = new JsonPath(response.getBody().asString());
+        assertEquals(resultMessage.getString("erros.email"), message);
     }
 
 }

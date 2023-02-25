@@ -14,7 +14,7 @@
       "type": "string"
     },
     "valor": {
-      "type": "integer"
+      "type": "number"
     },
     "parcelas": {
       "type": "integer"

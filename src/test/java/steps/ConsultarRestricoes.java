@@ -12,7 +12,7 @@ import io.restassured.response.ValidatableResponse;
 import static org.junit.Assert.assertEquals;
 
 
-public class consultarRestricoes {
+public class ConsultarRestricoes {
     String url = "http://localhost:8080/api/v1/";
     Response response;
 

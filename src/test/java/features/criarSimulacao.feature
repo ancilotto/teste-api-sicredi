@@ -38,7 +38,7 @@ Funcionalidade: criar uma simulação de proposta de crédito
     E informe um payload que o valor da simulação seja inferior ao permitido
     Quando eu realizar a requisição para criar a simulação de crédito
     E o status code na criação for um 400
-    Então a mensagem de erro para valor "Valor deve ser menor ou igual a R$ 40.000" é retornada
+    Então a mensagem de erro para valor "Valor deve ser maior ou igual a R$ 1000" é retornada
 
   #Validar regra para o campo de parcelas acima de 48 e inferior a 2
   Esquema do Cenário: Cenario: Criar simulação informando valor limite de parcelas

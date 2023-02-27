@@ -11,9 +11,8 @@ import io.restassured.response.ValidatableResponse;
 
 import static org.junit.Assert.assertEquals;
 
-import static io.restassured.RestAssured.request;
 
-public class consultarRestricoes {
+public class ConsultarRestricoes {
     String url = "http://localhost:8080/api/v1/";
     Response response;
 
@@ -27,7 +26,7 @@ public class consultarRestricoes {
     public void informar_um_CPF_sem_restrição_e_realizar_a_consulta() {
         url = url + "restricoes/40129091855";
         response = RestAssured.request(Method.GET, url);
-        System.out.println(response.statusCode());
+        System.out.println("Status code após a requisição é " + response.statusCode());
     }
 
     @Entao("o status code retornado é {int}")

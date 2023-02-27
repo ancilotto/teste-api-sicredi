@@ -1,10 +1,11 @@
 #language:pt
-
+@alterarSimulacaoGeral
 Funcionalidade: Endpoint responsável por realizar a alteracao de informacoes referentes a uma simulação previamente cadastrada
 
   Contexto:
     Dado que eu tenha acesso à URL de alterar simulações
 
+  @alterarSimulaçãoSucesso
   Esquema do Cenário: Fazer alterações de sucesso por meio do endpoint responsavel
     E informe no payload o campo "<campoPayload>" para ser alterado recebendo a informação "<info>"
     Quando eu realizar a requisição para alterar a simulação ja existente
@@ -20,12 +21,14 @@ Funcionalidade: Endpoint responsável por realizar a alteracao de informacoes re
       | seguro       | true                   |
       | seguro       | false                  |
 
+  @alterarSimulaçãoCpfDuplicado
   Cenario:Tentar fazer uma alteração para um CPF que não tenha uma simulação previamente cadastrada
     E informe um payload com informações válidas e uma URL com um CPF que nao tenha cadastro
     Quando eu realizar a requisição para alterar com um CPF não cadastrado
     E o status code for um 404
     Então a mensagem "CPF não encontrado"
 
+  @alterarSimulaçãoDadosInválidos
   Esquema do Cenário: Informar valores inválidos nos campos para realizar alterações
     E informe no payload o campo "<campoPayload>" para ser alterado recebendo a informação "<info>"
     Quando eu realizar a requisição para alterar a simulação ja existente

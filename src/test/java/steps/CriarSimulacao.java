@@ -62,7 +62,6 @@ public class CriarSimulacao {
                 .post(url)
                 .then()
                 .extract().response();
-
     }
 
     @E("o status code na criação for um {int}")
